@@ -1,4 +1,4 @@
-﻿#include <stdio.h>
+#include <stdio.h>
 #include <time.h>
 #include <stdlib.h>
 #include <string.h>
@@ -18,10 +18,26 @@ enum rounds
     NINE_ROUNDS = 3
 };
 
+void clear_input_buffer()
+{
+    int ch;
+    while ((ch = getchar()) != '\n' && ch != EOF) // Clear previously stored input
+        ;
+}
+
 int main()
 {
+start_game:
 
-    unsigned short flag = 1;
+    srand(time(NULL));
+
+    logo();
+    printf(WELCOME_MSG);
+    printf(GAME_DURATION_OPTIONS_MSG);
+
+    unsigned short play = 1;
+    unsigned short leave = 0;
+    unsigned short play_choice;
 
     unsigned short total_rounds = 3;
     unsigned short choosen_rounds = 1;
@@ -32,22 +48,19 @@ int main()
     unsigned short player_hand;
     unsigned short player_score = 0;
     unsigned short cpu_score = 0;
-    // short dificulty = 1;
 
-    srand(time(NULL));
-
-    logo();
-    printf(WELCOME_MSG);
-    printf(GAME_DURATION_OPTIONS_MSG);
-
-    // printf("Game difficulties:\n\t[1]-Easy\n\t[2]-Medium\n\t[3]-Hard");
-
-    while (flag == 1)
+    // Pre game section
+    while (1)
     {
-        short inner_flag = 1;
 
         printf(GAME_DURATION_SELECTION_MSG);
-        scanf("%hd", &choosen_rounds);
+
+        if (scanf("%hd", &choosen_rounds) != 1)
+        {
+            printf(ONLY_NUMBER_ALLOWED_PLAYER_CHOOSING_ROUND_QTY_MSG);
+            clear_input_buffer();
+            continue;
+        }
 
         if (choosen_rounds == THREE_ROUNDS)
         {
@@ -70,7 +83,8 @@ int main()
 
         short remaining_rounds = total_rounds;
 
-        while (inner_flag == 1)
+        // Game section
+        while (1)
         {
             track_rounds(&remaining_rounds, &total_rounds);
 
@@ -85,12 +99,12 @@ int main()
             // Restrict input to numbers only
             if (scanf("%hd", &player_hand) != 1)
             {
-                printf(ONLY_NUMBERS_ALLOWED_MSG);
+                printf(ONLY_NUMBERS_ALLOWED_CHOOSING_HAND_MSG);
+                clear_input_buffer();
                 continue;
             }
-
             // No winner cases
-            if (player_hand == ROCK && cpu_hand == ROCK)
+            else if (player_hand == ROCK && cpu_hand == ROCK)
             {
                 printf(LINE_SEPARATOR);
                 printf(PLAYER_PLAY);
@@ -210,12 +224,17 @@ int main()
                 printf(LINE_SEPARATOR);
                 cpu_score++;
             }
+            else
+            {
+                printf(ONLY_NUMBERS_ALLOWED_CHOOSING_HAND_MSG);
+                continue;
+            }
 
             remaining_rounds--;
 
             if (remaining_rounds == 0)
             {
-                inner_flag = 0;
+                break;
             }
         }
 
@@ -234,7 +253,33 @@ int main()
 
         show_score(&cpu_score, &player_score);
 
-        flag = 0;
+        // Play again section
+        while (1)
+        {
+            printf(PLAY_AGAIN);
+
+            if (scanf("%hd", &play_choice) != 1)
+            {
+                printf(ONLY_NUMBERS_ALLOWED_PLAYER_CHOICE_MSG);
+                clear_input_buffer();
+                continue;
+            }
+            else if (play_choice == play)
+            {
+                goto start_game;
+            }
+            else if (play_choice == leave)
+            {
+                break;
+            }
+            else
+            {
+
+                printf(ONLY_NUMBERS_ALLOWED_PLAY_AGAIN_MSG);
+                clear_input_buffer();
+                continue;
+            }
+        }
     }
     return 0;
 }

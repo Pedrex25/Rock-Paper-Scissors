@@ -133,10 +133,15 @@ char OPTION_NOT_AVAILABLE_MSG[] = "Option not available, please select an option
 
 char PLAYER_TURN_MSG[] = "Player turn:\t";
 
-char ONLY_NUMBERS_ALLOWED_MSG[] = "\nOnly numbers are allowed [1-3]\n";
+char ONLY_NUMBERS_ALLOWED_CHOOSING_HAND_MSG[] = "\nOnly numbers are allowed [1-3]\n";
+char ONLY_NUMBERS_ALLOWED_PLAYER_CHOICE_MSG[] = "\nOnly numbers are allowed [1-2]\n";
+char ONLY_NUMBER_ALLOWED_PLAYER_CHOOSING_ROUND_QTY_MSG[] = "\nOnly numbers are allowed [1-3]\n";
+char ONLY_NUMBERS_ALLOWED_PLAY_AGAIN_MSG[] = "\nOnly numbers are allowed \n\t[0]- Leave\t\n[1]- Plat again]\n";
 
 char NO_WINNER_ROUND_MSG[] = "No winner this round!\n";
 char NO_WINNER_GAME_MSG[] = "No winner this game, its a draw!\n";
+
+char PLAY_AGAIN[] = "Do you wish to play again\n";
 
 void show_winner_score(char winner[], short *score)
 {
@@ -150,7 +155,7 @@ void track_rounds(short *remaining_rounds, short *total_rounds)
 
 void show_score(short *cpu_score, short *player_score)
 {
-    printf("----------------Score----------------\n-Player score: %hd\n-CPU score: %hd", *player_score, *cpu_score);
+    printf("----------------Score----------------\n-Player score: %hd\n-CPU score: %hd\n", *player_score, *cpu_score);
 }
 
 char LINE_SEPARATOR[] = "------------------------------------------------------\n";
